@@ -2,9 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as session from 'express-session';
 import { AppModule } from './app.module';
+import { HttpExceptionFilter } from './common/filter/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  //全局异常过滤
+  app.useGlobalFilters(new HttpExceptionFilter());
   //配置session
   app.use(
     session({
