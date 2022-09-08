@@ -6,6 +6,8 @@ import { HttpExceptionFilter } from './common/filter/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  //所有请求前面携带/api
+  app.setGlobalPrefix('api');
   //全局异常过滤
   app.useGlobalFilters(new HttpExceptionFilter());
   //配置session
@@ -14,8 +16,8 @@ async function bootstrap() {
       secret: 'HappyDog',
       rolling: true,
       name: 'HappyDog.sid',
-      cookie: { maxAge: 9999999 },
-    }),
+      cookie: { maxAge: 9999999 }
+    })
   );
   //使用swagger-api文档
   const config = new DocumentBuilder()
