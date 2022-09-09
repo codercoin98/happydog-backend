@@ -6,9 +6,7 @@ import {
   Param,
   Post,
   Put,
-  Query,
-  Response,
-  Session
+  Query
 } from '@nestjs/common/decorators';
 import { CreateUserDto } from './dto/create-user.dto';
 
@@ -27,7 +25,7 @@ export class UserController {
   // 查找某一个用户路由
   @Get('findOne')
   async findOne(@Query() query: any) {
-    return this.userService.findOne(query.name);
+    return this.userService.findOneById(query.id);
   }
   // 删除一个用户的路由
   @Delete(':id')
@@ -38,13 +36,5 @@ export class UserController {
   @Put(':id')
   updateUser(@Body() body: any, @Param() param: any) {
     return this.userService.updateUser(param.id, body);
-  }
-  //获取验证码
-  @Get('code')
-  genCaptcha(@Response() res, @Session() session) {
-    const captcha = this.userService.genCaptcha();
-    session.code = captcha.text;
-    res.type('image/svg+xml');
-    res.send(captcha.data);
   }
 }
