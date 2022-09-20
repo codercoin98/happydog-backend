@@ -12,7 +12,7 @@ export class UploadController {
     console.log(file);
     return {
       // 注意：值是数字，不能是字符串
-      status: 200,
+      status: 201,
       url: `http://localhost:3000/${file.filename}`, // 图片 src ，必须
       alt: file.originalname, // 图片描述文字，非必须
       href: 'zzz' // 图片的链接，非必须
