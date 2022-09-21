@@ -17,6 +17,7 @@ async function bootstrap() {
     session({
       secret: 'HappyDog',
       rolling: true,
+      resave: false,
       name: 'HappyDog.sid',
       cookie: { maxAge: 9999999 }
     })

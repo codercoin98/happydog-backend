@@ -1,10 +1,29 @@
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { UserService } from '../user/user.service';
 import * as svgCaptcha from 'svg-captcha';
 @Injectable()
 export class AuthService {
-  signin() {
-    return 'sign in';
+  constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService
+  ) {}
+  //验证用户是否存在
+  async validateUser(username: string, password: string): Promise<any> {
+    const user = await this.userService.findOneByUsername(username);
+    if (user && user.password === password) {
+      return user;
+    }
+    return null;
   }
+  //登录，颁发token
+  signin(user: any) {
+    const payload = { username: user.username, sub: user._id };
+    return {
+      access_token: this.jwtService.sign(payload)
+    };
+  }
+  //注册
   signup() {
     return 'sign up';
   }

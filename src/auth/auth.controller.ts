@@ -1,7 +1,18 @@
-import { Controller, Post, Body, Get, Response, Session } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Request,
+  Response,
+  Session,
+  UseGuards,
+  Req
+} from '@nestjs/common';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
+import { LocalAuthGuard } from './local-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -9,18 +20,31 @@ export class AuthController {
     private authService: AuthService,
     private userService: UserService
   ) {}
-
+  //登录
+  @UseGuards(LocalAuthGuard)
   @Post('signin')
-  signin() {
-    return this.authService.signin();
+  async signin(@Request() req) {
+    console.log(req.user);
+    return this.authService.signin(req.user);
   }
+  //注册
   @Post('signup')
-  async signup(@Body() createUserDto: CreateUserDto) {
+  async signup(@Body() createUserDto: CreateUserDto, @Session() session) {
+    //验证验证码
+    if (
+      session.code.toLocaleLowerCase() !==
+      createUserDto.captcha.toLocaleLowerCase()
+    ) {
+      return {
+        status: 777,
+        message: 'captcha not match'
+      };
+    }
     //查找是否已有用户名
     const res1 = await this.userService.findOneByUsername(
       createUserDto.username
     );
-    if (res1.length > 0) {
+    if (res1) {
       //已经存在用户
       return {
         status: 400,
@@ -32,19 +56,19 @@ export class AuthController {
     if (res2) {
       return {
         status: 200,
-        message: 'success'
+        message: 'success register'
       };
     }
     return {
       status: 500,
-      message: 'failure'
+      message: 'server failure'
     };
   }
   //获取验证码
   @Get('code')
-  genCaptcha(@Response() res, @Session() session) {
+  genCaptcha(@Response() res, @Req() req) {
     const captcha = this.authService.genCaptcha();
-    session.code = captcha.text;
+    req.session.code = captcha.text;
     res.type('image/svg+xml');
     res.send(captcha.data);
   }

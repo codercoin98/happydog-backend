@@ -9,7 +9,11 @@ export class UserService {
   constructor(@InjectModel('User') private userModel: Model<UserDocument>) {}
   //创建用户
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const createUser = new this.userModel(createUserDto);
+    const user = {
+      username: createUserDto.username,
+      password: createUserDto.password
+    };
+    const createUser = new this.userModel(user);
     const temp = await createUser.save();
     return temp;
   }
@@ -19,14 +23,14 @@ export class UserService {
     return temp;
   }
   // 通过ID查找用户
-  async findOneById(id: number): Promise<User[]> {
-    const temp = await this.userModel.find({ _id: id });
-    return temp;
+  async findOneById(id: number): Promise<User> {
+    const [user] = await this.userModel.find({ _id: id });
+    return user;
   }
   // 通过ID查找用户
-  async findOneByUsername(username: string): Promise<User[]> {
-    const temp = await this.userModel.find({ username: username });
-    return temp;
+  async findOneByUsername(username: string): Promise<User> {
+    const [user] = await this.userModel.find({ username: username });
+    return user;
   }
   // 删除
   async delete(id: number) {
