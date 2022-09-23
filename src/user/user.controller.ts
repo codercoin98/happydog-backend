@@ -22,10 +22,10 @@ export class UserController {
   async findAll() {
     return this.userService.findAll();
   }
-  // 查找某一个用户路由
+  // 查找某一个用户
   @Get('findOne')
-  async findOne(@Query() query: any) {
-    return this.userService.findOneById(query.id);
+  async findOne(@Query('username') username: string) {
+    return this.userService.findOneByUsername(username);
   }
   // 删除一个用户的路由
   @Delete(':id')

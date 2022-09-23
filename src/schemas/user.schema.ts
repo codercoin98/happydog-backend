@@ -7,5 +7,14 @@ export class User extends Document {
   username: string;
   @Prop({ required: true })
   password: string;
+  @Prop({ required: false, default: () => 'nihao' })
+  nickname: string;
+  @Prop({
+    required: false,
+    default: () => 'http://localhost:3000/default_avatar.png'
+  })
+  avatar_url: string;
+  @Prop({ required: false })
+  mood: string;
 }
 export const UserSchema = SchemaFactory.createForClass(User);

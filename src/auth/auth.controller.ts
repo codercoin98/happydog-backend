@@ -36,7 +36,6 @@ export class AuthController {
   //注册
   @Post('signup')
   async signup(@Body() createUserDto: CreateUserDto, @Session() session) {
-    console.log(createUserDto);
     //验证验证码
     if (session.captcha.toLowerCase() !== createUserDto.captcha.toLowerCase()) {
       throw new BadRequestException(CAPTCHA_NOT_MATCH);
