@@ -7,7 +7,7 @@ export class User extends Document {
   username: string;
   @Prop({ required: true })
   password: string;
-  @Prop({ required: false, default: () => 'nihao' })
+  @Prop({ required: false, default: () => 'undefined' })
   nickname: string;
   @Prop({
     required: false,

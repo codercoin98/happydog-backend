@@ -29,15 +29,7 @@ export class UserService {
   }
   // 通过ID查找用户,返回指定字段
   async findOneByUsername(username: string): Promise<User> {
-    const [user] = await this.userModel.find(
-      { username: username },
-      {
-        username: 1,
-        nickname: 1,
-        avatar_url: 1,
-        mood: 1
-      }
-    );
+    const [user] = await this.userModel.find({ username: username });
     return user;
   }
   // 删除

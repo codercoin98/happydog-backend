@@ -25,7 +25,11 @@ export class UserController {
   // 查找某一个用户
   @Get('findOne')
   async findOne(@Query('username') username: string) {
-    return this.userService.findOneByUsername(username);
+    const user = await (
+      await this.userService.findOneByUsername(username)
+    ).toObject();
+    Reflect.deleteProperty(user, 'password');
+    return user;
   }
   // 删除一个用户的路由
   @Delete(':id')

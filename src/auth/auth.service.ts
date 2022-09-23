@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import * as svgCaptcha from 'svg-captcha';
+import { User } from 'src/schemas/user.schema';
 @Injectable()
 export class AuthService {
   constructor(
@@ -9,7 +10,7 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
   //验证用户是否存在
-  async validateUser(username: string, password: string): Promise<any> {
+  async validateUser(username: string, password: string): Promise<User> {
     const user = await this.userService.findOneByUsername(username);
     if (user && user.password === password) {
       return user;
