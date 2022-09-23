@@ -19,7 +19,7 @@ async function bootstrap() {
       rolling: true,
       resave: false,
       name: 'HappyDog.sid',
-      cookie: { maxAge: 9999999 }
+      cookie: { secure: false, maxAge: 9999999 }
     })
   );
   //配置静态资源的访问目录
