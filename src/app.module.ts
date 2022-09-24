@@ -9,7 +9,7 @@ import { UploadModule } from './upload/upload.module';
   imports: [
     AuthModule,
     UserModule,
-    MongooseModule.forRoot('mongodb://localhost:/happydog'),
+    MongooseModule.forRoot('mongodb://localhost:27017/happydog'),
     UploadModule
   ],
   controllers: [AppController],
