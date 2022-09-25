@@ -37,7 +37,9 @@ export class AuthController {
   @Post('signup')
   async signup(@Body() createUserDto: CreateUserDto, @Session() session) {
     //验证验证码
-    if (session.captcha.toLowerCase() !== createUserDto.captcha.toLowerCase()) {
+    if (
+      session?.captcha.toLowerCase() !== createUserDto.captcha.toLowerCase()
+    ) {
       throw new BadRequestException(CAPTCHA_NOT_MATCH);
     }
     //查找是否已有用户名
