@@ -16,5 +16,7 @@ export class User extends Document {
   avatar_url: string;
   @Prop({ required: false })
   mood: string;
+  @Prop({ required: true, default: () => new Date() })
+  created_at: Date;
 }
 export const UserSchema = SchemaFactory.createForClass(User);
