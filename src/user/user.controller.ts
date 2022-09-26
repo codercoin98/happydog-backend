@@ -31,12 +31,12 @@ export class UserController {
     Reflect.deleteProperty(user, 'password');
     return user;
   }
-  // 删除一个用户的路由
+  // 删除一个用户
   @Delete(':id')
   deleteUser(@Param() param: any) {
     return this.userService.delete(param.sid);
   }
-  // 更改用户信息的路由
+  // 更改用户信息
   @Put(':id')
   updateUser(@Body() body: any, @Param() param: any) {
     return this.userService.updateUser(param.id, body);
