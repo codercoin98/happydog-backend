@@ -47,8 +47,30 @@ export class PostService {
     ]);
   }
   //根据id查找帖子
-  async findOne(post_id: string): Promise<PostDocument> {
-    return await this.postModel.findOne({ _id: post_id });
+  async findOne(post_id: string): Promise<PostDocument[]> {
+    return await this.postModel.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(post_id)
+        }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'author_id',
+          foreignField: '_id',
+          as: 'author'
+        }
+      },
+      {
+        $project: {
+          author_id: 0,
+          author: {
+            password: 0
+          }
+        }
+      }
+    ]);
   }
   //根据id更新对应的帖子内容
   async update(post_id: string, data: UpdatePostDto): Promise<any> {

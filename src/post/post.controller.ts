@@ -28,7 +28,7 @@ export class PostController {
   }
   //根据id查询帖子
   @Get('findOne')
-  async findOne(@Query('post_id') post_id: string): Promise<PostDocument> {
+  async findOne(@Query('post_id') post_id: string): Promise<PostDocument[]> {
     return this.postService.findOne(post_id);
   }
   //根据id更新帖子
