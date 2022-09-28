@@ -52,15 +52,14 @@ export class AuthController {
     }
     //用户名未注册,进行注册
     const res2 = await this.userService.create(createUserDto);
+    console.log(res2);
+
     if (!res2) {
       //注册失败，抛出错误
       throw new InternalServerErrorException();
     }
     //注册成功，进行登录，办法token
-    return this.authService.signin({
-      username: res2.username,
-      password: res2.password
-    });
+    return this.authService.signin(res2);
   }
   //获取验证码
   @Get('code')
