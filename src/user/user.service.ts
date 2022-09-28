@@ -19,9 +19,11 @@ export class UserService {
     return temp;
   }
   // 查找
-  async findAll(): Promise<User[]> {
+  async findAll(): Promise<{ num: number }> {
     const temp = await this.userModel.find().exec();
-    return temp;
+    return {
+      num: temp.length
+    };
   }
   // 通过ID查找用户
   async findOneById(id: string): Promise<User> {

@@ -19,7 +19,7 @@ export class UserController {
   }
   //查找所有 user
   @Get('findAll')
-  async findAll() {
+  async findAll(): Promise<{ num: number }> {
     return this.userService.findAll();
   }
   // 查找某一个用户
