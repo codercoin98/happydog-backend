@@ -24,11 +24,8 @@ export class UserController {
   }
   // 查找某一个用户
   @Get('findOne')
-  async findOne(@Query('username') username: string) {
-    const user = await (
-      await this.userService.findOneByUsername(username)
-    ).toObject();
-    Reflect.deleteProperty(user, 'password');
+  async findOne(@Query('uid') uid: string) {
+    const user = await this.userService.findOneById(uid);
     return user;
   }
   // 删除一个用户
