@@ -18,8 +18,8 @@ export class AuthService {
     return null;
   }
   //登录，颁发token
-  signin(user: any) {
-    const payload = { username: user.username, sub: user._id };
+  signin(user: User) {
+    const payload = { uid: user._id };
     return {
       access_token: this.jwtService.sign(payload)
     };
