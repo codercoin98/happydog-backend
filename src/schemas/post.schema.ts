@@ -8,8 +8,6 @@ export class Post extends Document {
   title: string;
   @Prop({ required: true })
   content: string;
-  @Prop({ required: false })
-  images_urls: string[];
   @Prop({ type: mongoose.Types.ObjectId, required: true })
   author_id: ObjectId;
   @Prop({ required: true, default: () => new Date() })
