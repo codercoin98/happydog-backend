@@ -19,6 +19,7 @@ async function bootstrap() {
       rolling: true,
       resave: false,
       name: 'HappyDog.sid',
+      saveUninitialized: true,
       cookie: { secure: false, maxAge: 9999999 }
     })
   );
