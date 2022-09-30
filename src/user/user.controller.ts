@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, InternalServerErrorException } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
   Body,
@@ -9,6 +9,7 @@ import {
   Query
 } from '@nestjs/common/decorators';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -29,13 +30,18 @@ export class UserController {
     return user;
   }
   // 删除一个用户
-  @Delete(':id')
-  deleteUser(@Param() param: any) {
-    return this.userService.delete(param.sid);
+  @Delete('delete/:uid')
+  deleteUser(@Param('uid') uid: string) {
+    return this.userService.deleteOneById(uid);
   }
   // 更改用户信息
-  @Put(':id')
-  updateUser(@Body() body: any, @Param() param: any) {
-    return this.userService.updateUser(param.id, body);
+  @Put('update/:uid')
+  async updateUser(@Body() body: UpdateUserDto, @Param('uid') uid: string) {
+    const { modifiedCount } = await this.userService.updateUser(uid, body);
+    if (modifiedCount === 1) {
+      //更新成功，返回新的用户信息
+      return this.userService.findOneById(uid);
+    }
+    return new InternalServerErrorException();
   }
 }

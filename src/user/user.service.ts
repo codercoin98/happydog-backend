@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from '../schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import mongoose from 'mongoose';
+import { UpdateUserDto } from './dto/update-user.dto';
 @Injectable()
 export class UserService {
   //注册Schama后通过@InjectModel将User模型注入到UserService中
@@ -44,14 +45,23 @@ export class UserService {
     const [user] = await this.userModel.find({ username: username });
     return user;
   }
-  // 删除
-  async delete(id: number) {
-    const temp = await this.userModel.remove({ _id: id });
+  // 删除一个用户
+  async deleteOneById(uid: string) {
+    const temp = await this.userModel.remove({ _id: uid });
     return temp;
   }
   // 修改
-  async updateUser(id: number, data: any) {
-    const temp = await this.userModel.updateOne({ _id: id }, { $set: data });
+  async updateUser(uid: string, data: UpdateUserDto) {
+    const temp = await this.userModel.updateOne(
+      { _id: uid },
+      {
+        $set: {
+          nickname: data.nickname,
+          avatar_url: data.avatar_url,
+          bio: data.bio
+        }
+      }
+    );
     return temp;
   }
 }
