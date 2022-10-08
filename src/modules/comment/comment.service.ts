@@ -30,6 +30,8 @@ export class CommentService {
     ]);
   }
   async remove(comment_id: string) {
-    return await this.commentModel.remove({ _id: comment_id });
+    return await this.commentModel.remove({
+      _id: new mongoose.Types.ObjectId(comment_id)
+    });
   }
 }
