@@ -5,8 +5,10 @@ import {
   Get,
   Post,
   Put,
-  Query
+  Query,
+  UseGuards
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { PostDocument } from '../schemas/post.schema';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -17,6 +19,7 @@ import { DeleteResult } from '../mongo/result';
 export class PostController {
   constructor(private readonly postService: PostService) {}
   //创建帖子
+  @UseGuards(AuthGuard('jwt'))
   @Post('create')
   async create(@Body() body: CreatePostDto): Promise<PostDocument> {
     return this.postService.create(body);
@@ -32,6 +35,7 @@ export class PostController {
     return this.postService.findOne(post_id);
   }
   //根据id更新帖子
+  @UseGuards(AuthGuard('jwt'))
   @Put('update')
   async update(
     @Query('post_id') post_id: string,
@@ -41,6 +45,7 @@ export class PostController {
     return this.postService.update(post_id, body);
   }
   //根据id删除帖子
+  @UseGuards(AuthGuard('jwt'))
   @Delete('delete')
   async delete(@Query('post_id') post_id: string): Promise<DeleteResult> {
     return this.postService.delete(post_id);

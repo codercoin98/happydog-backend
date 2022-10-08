@@ -1,13 +1,15 @@
 import { Controller, Get, InternalServerErrorException } from '@nestjs/common';
-import { UserService } from './user.service';
 import {
   Body,
   Delete,
   Param,
   Post,
   Put,
-  Query
+  Query,
+  UseGuards
 } from '@nestjs/common/decorators';
+import { AuthGuard } from '@nestjs/passport';
+import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -24,17 +26,20 @@ export class UserController {
     return this.userService.findAll();
   }
   // 查找某一个用户
+  @UseGuards(AuthGuard('jwt'))
   @Get('findOne')
   async findOne(@Query('uid') uid: string) {
     const user = await this.userService.findOneById(uid);
     return user;
   }
   // 删除一个用户
+  @UseGuards(AuthGuard('jwt'))
   @Delete('delete/:uid')
   deleteUser(@Param('uid') uid: string) {
     return this.userService.deleteOneById(uid);
   }
   // 更改用户信息
+  @UseGuards(AuthGuard('jwt'))
   @Put('update/:uid')
   async updateUser(@Body() body: UpdateUserDto, @Param('uid') uid: string) {
     const { modifiedCount } = await this.userService.updateUser(uid, body);

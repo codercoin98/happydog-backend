@@ -1,11 +1,13 @@
 import { Controller, Post, UseInterceptors } from '@nestjs/common';
-import { UploadedFile } from '@nestjs/common/decorators';
+import { UploadedFile, UseGuards } from '@nestjs/common/decorators';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import { UploadService } from './upload.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('upload')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
+  @UseGuards(AuthGuard('jwt'))
   @Post('/image')
   @UseInterceptors(FileInterceptor('file'))
   uploadImage(@UploadedFile() file) {
