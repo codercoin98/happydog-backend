@@ -9,11 +9,11 @@ import {
   UseGuards
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { PostDocument } from '../schemas/post.schema';
+import { PostDocument } from '../../schemas/post.schema';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { DeleteResult } from '../mongo/result';
+import { DeleteResult } from '../../mongo/result';
 
 @Controller('post')
 export class PostController {

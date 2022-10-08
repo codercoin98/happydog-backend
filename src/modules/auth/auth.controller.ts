@@ -14,7 +14,7 @@ import {
 import {
   CAPTCHA_NOT_MATCH,
   USERNAME_ALREADY_EXISTS
-} from '../common/constants/error_message';
+} from '../../common/constants/error_message';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';

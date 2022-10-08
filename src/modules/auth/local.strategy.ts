@@ -2,8 +2,8 @@ import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { USERNAME_OR_PASSWORD_NOT_MATCH } from '../common/constants/error_message';
-import { User } from 'src/schemas/user.schema';
+import { USERNAME_OR_PASSWORD_NOT_MATCH } from '../../common/constants/error_message';
+import { User } from '../../schemas/user.schema';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {

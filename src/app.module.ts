@@ -1,19 +1,19 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AuthModule } from './auth/auth.module';
-import { UploadModule } from './upload/upload.module';
-import { PostModule } from './post/post.module';
-import { CommentModule } from './comment/comment.module';
-import { ReplyModule } from './reply/reply.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { UserModule } from './modules/user/user.module';
+import { UploadModule } from './modules/upload/upload.module';
+import { PostModule } from './modules/post/post.module';
+import { CommentModule } from './modules/comment/comment.module';
+import { ReplyModule } from './modules/reply/reply.module';
 @Module({
   imports: [
+    MongooseModule.forRoot('mongodb://localhost:27017/happydog'),
     AuthModule,
     UserModule,
     PostModule,
-    MongooseModule.forRoot('mongodb://localhost:27017/happydog'),
     UploadModule,
     CommentModule,
     ReplyModule
