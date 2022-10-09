@@ -26,6 +26,58 @@ export class CommentService {
         $match: {
           post_id: new mongoose.Types.ObjectId(post_id)
         }
+      },
+      {
+        $lookup: {
+          from: 'replies',
+          pipeline: [
+            {
+              $lookup: {
+                from: 'users',
+                pipeline: [
+                  {
+                    $project: {
+                      nickname: 1,
+                      avatar_url: 1
+                    }
+                  }
+                ],
+                localField: 'user_id',
+                foreignField: '_id',
+                as: 'user'
+              }
+            },
+            {
+              $project: {
+                user_id: 0
+              }
+            }
+          ],
+          localField: '_id',
+          foreignField: 'reply_to_comment_id',
+          as: 'reply_list'
+        }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          pipeline: [
+            {
+              $project: {
+                nickname: 1,
+                avatar_url: 1
+              }
+            }
+          ],
+          localField: 'user_id',
+          foreignField: '_id',
+          as: 'user'
+        }
+      },
+      {
+        $project: {
+          user_id: 0
+        }
       }
     ]);
   }
