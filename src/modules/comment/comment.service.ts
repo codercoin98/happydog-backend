@@ -17,7 +17,35 @@ export class CommentService {
       user_id: new mongoose.Types.ObjectId(createCommentDto.user_id)
     };
     const comment = new this.commentModel(info);
-    return await comment.save();
+    const new_comment = await comment.save();
+    return await this.commentModel.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(new_comment._id)
+        }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          pipeline: [
+            {
+              $project: {
+                nickname: 1,
+                avatar_url: 1
+              }
+            }
+          ],
+          localField: 'user_id',
+          foreignField: '_id',
+          as: 'user'
+        }
+      },
+      {
+        $project: {
+          user_id: 0
+        }
+      }
+    ]);
   }
 
   async findPostAllCommentById(post_id: string) {
