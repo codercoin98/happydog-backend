@@ -21,7 +21,35 @@ export class ReplyService {
         new mongoose.Types.ObjectId(createReplyDto.reply_to_reply_id)
     };
     const reply = new this.replyModel(info);
-    return await reply.save();
+    const new_reply = await reply.save();
+    return await this.replyModel.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(new_reply._id)
+        }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          pipeline: [
+            {
+              $project: {
+                nickname: 1,
+                avatar_url: 1
+              }
+            }
+          ],
+          localField: 'user_id',
+          foreignField: '_id',
+          as: 'user'
+        }
+      },
+      {
+        $project: {
+          user_id: 0
+        }
+      }
+    ]);
   }
   //删除某一条评论
   async remove(id: string) {
