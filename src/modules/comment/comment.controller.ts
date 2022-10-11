@@ -26,7 +26,7 @@ export class CommentController {
     return this.commentService.findPostAllCommentById(post_id);
   }
   @Delete('delete/:comment_id')
-  remove(@Param('comment_id') comment_id: string) {
-    return this.commentService.remove(comment_id);
+  deleteOneById(@Param('comment_id') comment_id: string) {
+    return this.commentService.deleteOneById(comment_id);
   }
 }

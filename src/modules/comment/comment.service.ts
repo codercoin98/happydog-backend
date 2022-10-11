@@ -109,8 +109,8 @@ export class CommentService {
       }
     ]);
   }
-  async remove(comment_id: string) {
-    return await this.commentModel.remove({
+  async deleteOneById(comment_id: string) {
+    return await this.commentModel.deleteOne({
       _id: new mongoose.Types.ObjectId(comment_id)
     });
   }
