@@ -14,6 +14,7 @@ import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { DeleteResult } from '../../mongo/result';
+import { PostCreateResult } from './types';
 
 @Controller('post')
 export class PostController {
@@ -21,8 +22,8 @@ export class PostController {
   //创建帖子
   @UseGuards(AuthGuard('jwt'))
   @Post('create')
-  async create(@Body() body: CreatePostDto): Promise<PostDocument> {
-    return this.postService.create(body);
+  async create(@Body() body: CreatePostDto): Promise<PostCreateResult> {
+    return this.postService.create(body)[0];
   }
   //查询所有帖子并过滤字段返回
   @Get('findAll')

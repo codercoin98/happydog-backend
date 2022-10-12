@@ -6,11 +6,12 @@ import { CreatePostDto } from './dto/create-post.dto';
 import mongoose from 'mongoose';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { DeleteResult } from 'src/mongo/result';
+import { PostCreateResult } from './types';
 
 @Injectable()
 export class PostService {
   constructor(@InjectModel('Post') private postModel: Model<PostDocument>) {}
-  async create(createPostDTO: CreatePostDto): Promise<PostDocument> {
+  async create(createPostDTO: CreatePostDto): Promise<PostCreateResult[]> {
     const postInfo = {
       title: createPostDTO.title,
       content: createPostDTO.content,
@@ -18,7 +19,34 @@ export class PostService {
     };
     const newPost = new this.postModel(postInfo);
     const result = await newPost.save();
-    return result;
+    return await this.postModel.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(result._id)
+        }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          pipeline: [
+            {
+              $project: {
+                nickname: 1,
+                avatar_url: 1
+              }
+            }
+          ],
+          localField: 'author_id',
+          foreignField: '_id',
+          as: 'author'
+        }
+      },
+      {
+        $project: {
+          author_id: 0
+        }
+      }
+    ]);
   }
   //查找所有的帖子
   async findAllPost(): Promise<PostDocument[]> {
