@@ -31,17 +31,32 @@ export class PostService {
       {
         $lookup: {
           from: 'users',
+          pipeline: [
+            {
+              $project: {
+                nickname: 1,
+                avatar_url: 1
+              }
+            }
+          ],
           localField: 'author_id',
           foreignField: '_id',
           as: 'author'
         }
       },
       {
+        $lookup: {
+          from: 'comments',
+          localField: '_id',
+          foreignField: 'post_id',
+          as: 'comments'
+        }
+      },
+      { $addFields: { comment_count: { $size: '$comments' } } },
+      {
         $project: {
           author_id: 0,
-          author: {
-            password: 0
-          }
+          comments: 0
         }
       }
     ]);
