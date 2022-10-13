@@ -6,7 +6,7 @@ export type CommentDocument = Comment & Document;
 export class Comment extends Document {
   @Prop({ type: mongoose.Types.ObjectId, required: true })
   post_id: ObjectId;
-  @Prop({ required: true })
+  @Prop({ required: true, maxlength: 1000 })
   content: string;
   @Prop({ type: mongoose.Types.ObjectId, required: true })
   user_id: ObjectId;
