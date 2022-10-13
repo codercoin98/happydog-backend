@@ -11,6 +11,8 @@ export class Reply extends Document {
   @Prop({ type: mongoose.Types.ObjectId, required: true })
   user_id: ObjectId;
   @Prop({ type: mongoose.Types.ObjectId, required: true })
+  reply_to_user_id: ObjectId;
+  @Prop({ type: mongoose.Types.ObjectId, required: true })
   reply_to_comment_id: ObjectId;
   @Prop({ type: mongoose.Types.ObjectId, default: null })
   reply_to_reply_id: ObjectId;
