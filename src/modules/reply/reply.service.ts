@@ -13,6 +13,9 @@ export class ReplyService {
       post_id: new mongoose.Types.ObjectId(createReplyDto.post_id),
       content: createReplyDto.content,
       user_id: new mongoose.Types.ObjectId(createReplyDto.user_id),
+      reply_to_user_id: new mongoose.Types.ObjectId(
+        createReplyDto.reply_to_user_id
+      ),
       reply_to_comment_id: new mongoose.Types.ObjectId(
         createReplyDto.reply_to_comment_id
       ),
@@ -45,7 +48,24 @@ export class ReplyService {
         }
       },
       {
+        $lookup: {
+          from: 'users',
+          pipeline: [
+            {
+              $project: {
+                nickname: 1,
+                avatar_url: 1
+              }
+            }
+          ],
+          localField: 'reply_to_user_id',
+          foreignField: '_id',
+          as: 'reply_to_user'
+        }
+      },
+      {
         $project: {
+          reply_to_user_id: 0,
           user_id: 0
         }
       }

@@ -76,8 +76,25 @@ export class CommentService {
               }
             },
             {
+              $lookup: {
+                from: 'users',
+                pipeline: [
+                  {
+                    $project: {
+                      nickname: 1,
+                      avatar_url: 1
+                    }
+                  }
+                ],
+                localField: 'reply_to_user_id',
+                foreignField: '_id',
+                as: 'reply_to_user'
+              }
+            },
+            {
               $project: {
-                user_id: 0
+                user_id: 0,
+                reply_to_user_id: 0
               }
             }
           ],
