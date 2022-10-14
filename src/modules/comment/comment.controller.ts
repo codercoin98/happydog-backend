@@ -25,6 +25,7 @@ export class CommentController {
   findPostAllComment(@Query('post_id') post_id: string) {
     return this.commentService.findPostAllCommentById(post_id);
   }
+  @UseGuards(AuthGuard('jwt'))
   @Delete('delete/:comment_id')
   deleteOneById(@Param('comment_id') comment_id: string) {
     return this.commentService.deleteOneById(comment_id);

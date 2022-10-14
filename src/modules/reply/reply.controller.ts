@@ -1,7 +1,15 @@
-import { Controller, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  Delete,
+  UseGuards
+} from '@nestjs/common';
 import { ReplyService } from './reply.service';
 import { CreateReplyDto } from './dto/create-reply.dto';
-
+import { AuthGuard } from '@nestjs/passport';
+@UseGuards(AuthGuard('jwt'))
 @Controller('reply')
 export class ReplyController {
   constructor(private readonly replyService: ReplyService) {}
