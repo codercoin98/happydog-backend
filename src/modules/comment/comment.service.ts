@@ -41,6 +41,14 @@ export class CommentService {
         }
       },
       {
+        $lookup: {
+          from: 'replies',
+          localField: '_id',
+          foreignField: 'reply_to_comment_id',
+          as: 'reply_list'
+        }
+      },
+      {
         $project: {
           user_id: 0
         }
