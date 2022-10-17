@@ -9,5 +9,6 @@ export interface PostCreateResult {
       avatar_url: string;
     }
   ];
+  categories: string[];
   created_at: string;
 }

@@ -23,7 +23,7 @@ export class PostController {
   @UseGuards(AuthGuard('jwt'))
   @Post('create')
   async create(@Body() body: CreatePostDto): Promise<PostCreateResult> {
-    return this.postService.create(body)[0];
+    return (await this.postService.create(body)).pop();
   }
   //查询所有帖子并过滤字段返回
   @Get('findAll')

@@ -10,6 +10,8 @@ export class Post extends Document {
   content: string;
   @Prop({ type: mongoose.Types.ObjectId, required: true })
   author_id: ObjectId;
+  @Prop({ required: true })
+  categories: string[];
   @Prop({ required: true, default: () => new Date() })
   created_at: Date;
 }

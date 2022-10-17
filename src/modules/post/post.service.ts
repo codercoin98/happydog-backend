@@ -15,7 +15,8 @@ export class PostService {
     const postInfo = {
       title: createPostDTO.title,
       content: createPostDTO.content,
-      author_id: new mongoose.Types.ObjectId(createPostDTO.author_id)
+      author_id: new mongoose.Types.ObjectId(createPostDTO.author_id),
+      categories: createPostDTO.categories
     };
     const newPost = new this.postModel(postInfo);
     const result = await newPost.save();
