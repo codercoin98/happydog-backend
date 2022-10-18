@@ -50,7 +50,10 @@ export class PostService {
     ]);
   }
   //查找所有的帖子
-  async findAllPost(): Promise<PostDocument[]> {
+  async findAllPost(
+    currentPage: number,
+    size: number
+  ): Promise<PostDocument[]> {
     /** 聚合管道查询
      * $lookup实现多表查询(类似join)
      * from-需要连接的表,localField-本表需要与连接表匹配的字段，foreignField-连接表与本表匹配的字段，as-匹配的信息在本表的字段名
@@ -87,7 +90,9 @@ export class PostService {
           author_id: 0,
           comments: 0
         }
-      }
+      },
+      { $skip: (Number(currentPage) - 1) * Number(size) },
+      { $limit: Number(size) }
     ]);
   }
   //根据id查找帖子

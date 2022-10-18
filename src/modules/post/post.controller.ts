@@ -14,7 +14,7 @@ import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { DeleteResult } from '../../mongo/result';
-import { PostCreateResult } from './types';
+import { GetPostParams, PostCreateResult } from './types';
 
 @Controller('post')
 export class PostController {
@@ -27,8 +27,10 @@ export class PostController {
   }
   //查询所有帖子并过滤字段返回
   @Get('findAll')
-  async findAllPost(): Promise<PostDocument[]> {
-    return this.postService.findAllPost();
+  async findAllPost(@Query() params: GetPostParams): Promise<PostDocument[]> {
+    console.log(params);
+
+    return this.postService.findAllPost(params.currentPage, params.size);
   }
   //根据id查询帖子
   @Get('findOne')

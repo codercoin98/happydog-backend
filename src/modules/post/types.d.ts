@@ -12,3 +12,7 @@ export interface PostCreateResult {
   categories: string[];
   created_at: string;
 }
+export interface GetPostParams {
+  currentPage: number;
+  size: number;
+}
