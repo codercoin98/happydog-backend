@@ -10,7 +10,7 @@ import { CommentModule } from './modules/comment/comment.module';
 import { ReplyModule } from './modules/reply/reply.module';
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/happydog'),
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017/happydog'),
     AuthModule,
     UserModule,
     PostModule,
